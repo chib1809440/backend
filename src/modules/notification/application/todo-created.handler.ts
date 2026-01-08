@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { TodoCreatedEvent } from '../../../events/todo/todo-created.event';
 import { EventBus } from '../../../shared/event-bus/event-bus';
+import { TodoCreatedEvent } from '../../../shared/events/todo/todo-created.event';
 
 @Injectable()
 export class TodoCreatedNotificationHandler implements OnModuleInit {

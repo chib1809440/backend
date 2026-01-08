@@ -1,6 +1,6 @@
 import crypto from 'crypto';
-import { TodoCreatedEvent } from '../../../events/todo/todo-created.event';
 import { AggregateRoot } from '../../../shared/domain/aggregate-root';
+import { TodoCreatedEvent } from '../../../shared/events/todo/todo-created.event';
 
 export class Todo extends AggregateRoot {
   constructor(

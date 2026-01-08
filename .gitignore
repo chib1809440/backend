@@ -1,60 +1,123 @@
-# compiled output
-/dist
-/node_modules
-/build
-
-# Logs
-logs
-*.log
+############################
+# Node.js
+############################
+node_modules/
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 lerna-debug.log*
 
-# OS
+############################
+# Build output
+############################
+dist/
+build/
+.out/
+.next/
+.nuxt/
+coverage/
+.nyc_output/
+
+############################
+# Logs
+############################
+logs/
+*.log
+
+############################
+# Runtime files
+############################
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+############################
+# Environment variables
+############################
+.env
+.env.*
+!.env.example
+
+############################
+# Cache & temp files
+############################
+.cache/
+.tmp/
+.temp/
+.eslintcache
+.parcel-cache
+.turbo/
+.vite/
+.swc/
+
+############################
+# OS files
+############################
 .DS_Store
+Thumbs.db
 
-# Tests
-/coverage
-/.nyc_output
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
+############################
+# IDEs & Editors
+############################
+.idea/
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+.project
+.classpath
+.settings/
+*.sublime-workspace
+*.sublime-project
 
-# temp directory
-.temp
-.tmp
+############################
+# Tests
+############################
+/coverage/
+/test-results/
+/playwright-report/
 
-# Runtime data
-pids
+############################
+# Prisma
+############################
+/generated/prisma/
+/prisma/migrations/
+
+############################
+# Docker
+############################
+docker-data/
 *.pid
-*.seed
-*.pid.lock
+*.sock
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+############################
+# Monorepo tools
+############################
+.nx/
+.lerna/
+.turbo/
 
-/generated/prisma
+############################
+# Frontend specific
+############################
+.eslintcache
+stylelint-cache
+*.tsbuildinfo
 
-/generated/prisma
+############################
+# Debug & profiling
+############################
+*.cpuprofile
+*.heapprofile
+report.*.json
+
+############################
+# Misc
+############################
+*.local
+*.bak
+*.swp

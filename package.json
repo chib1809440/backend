@@ -1,5 +1,5 @@
 {
-  "name": "nest-ddd-lite-demo",
+  "name": "backend",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -12,15 +12,21 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "migrate:dev": "prisma migrate dev"
+    "prisma:migrate:dev": "prisma migrate dev",
+    "prisma:generate": "pnpm prisma generate",
+    "gen:module": "node scripts/gen-ddd-module.js",
+    "install:ci": "pnpm install --frozen-lockfile"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
     "@prisma/client": "6",
+    "minio": "^8.0.6",
+    "multer": "^2.0.2",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "slug": "^11.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
@@ -30,6 +36,7 @@
     "@nestjs/testing": "^11.0.1",
     "@types/express": "^5.0.0",
     "@types/jest": "^30.0.0",
+    "@types/multer": "^2.0.0",
     "@types/node": "^22.10.7",
     "@types/supertest": "^6.0.2",
     "eslint": "^9.18.0",

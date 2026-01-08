@@ -12,3 +12,63 @@ model Todo {
   title     String
   createdAt DateTime @default(now())
 }
+
+model Category {
+  id        String    @id @default(uuid())
+  name      String
+  slug      String   @unique
+  icon      String
+  products  Product[]
+}
+
+model Product {
+  id             String    @id @default(uuid())
+  name           String
+  slug           String    @unique
+  description    String
+  price          Float     @default(0)
+  originalPrice  Float     @default(0)
+  discount       Int       @default(0)
+
+  rating         Float     @default(0)
+  reviewCount    Int       @default(0)
+  soldCount      Int       @default(0)
+  stock          Int       @default(0)
+
+  shopId         String
+  shopName       String
+
+  categoryId     String
+  category       Category  @relation(fields: [categoryId], references: [id])
+
+  images         ProductImage[]
+  variants       Variant[]
+
+  createdAt      DateTime  @default(now())
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  url       String
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Variant {
+  id        String          @id @default(uuid())
+  name      String          // Color, Size
+  type      String          // color | size
+  productId String
+  product   Product         @relation(fields: [productId], references: [id])
+  options   VariantOption[]
+}
+
+model VariantOption {
+  id        String   @id @default(uuid())
+  value     String   // Red, XL
+  stock     Int
+  price     Float    @default(0)
+
+  variantId String
+  variant   Variant  @relation(fields: [variantId], references: [id])
+}

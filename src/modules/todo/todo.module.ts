@@ -14,10 +14,6 @@ import { TodoController } from './presentation/todo.controller';
       provide: TODO_REPOSITORY,
       useClass: PrismaTodoRepository,
     },
-    {
-      provide: PrismaTodoRepository,
-      useExisting: TODO_REPOSITORY,
-    },
   ],
 })
 export class TodoModule {}

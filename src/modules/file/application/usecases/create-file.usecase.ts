@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { Inject } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import {
   FILE_STORAGE,
   FileStorage,
 } from '../../domain/ports/file-storage.port';
-import { randomUUID } from 'crypto';
 
 export class CreateFileUseCase {
   constructor(
@@ -14,7 +14,7 @@ export class CreateFileUseCase {
   ) {}
 
   execute(file: Express.Multer.File) {
-    const key = `${Date.now()}-${randomUUID()}.png`;
+    const key = `${Date.now()}-${randomUUID()}`.toUpperCase();
 
     return this.storage.upload(file.buffer, key, file.mimetype);
   }

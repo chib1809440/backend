@@ -19,10 +19,11 @@ export class AppLogger implements AppLoggerPort {
     this.logger.warn(message, context);
   }
 
-  error(message: string, error?: Error, context?: LogContext): void {
+  error(message: string, error?: Error | string, context?: LogContext): void {
     this.logger.error(message, {
       ...context,
-      stack: error?.stack,
+      stack: error instanceof Error ? error.stack : undefined,
+      errorMessage: typeof error === 'string' ? error : undefined,
     });
   }
 

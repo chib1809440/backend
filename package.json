@@ -14,7 +14,9 @@
     "start:debug:gateway-service": "nest start --debug --watch gateway-service",
     "prisma:migrate:dev": "prisma migrate dev",
     "prisma:generate": "pnpm prisma generate",
-    "install:ci": "pnpm install --frozen-lockfile"
+    "install:ci": "pnpm install --frozen-lockfile",
+    "lint": "eslint .",
+     "test": "jest"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",

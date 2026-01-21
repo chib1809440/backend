@@ -1,0 +1,17 @@
+HTTP
+ ↓
+Middleware (Express/Fastify)
+ ↓
+Guard (Auth / RBAC)
+ ↓
+Interceptor (before)
+ ↓
+Pipe (validate / transform)
+ ↓
+Controller method
+ ↓
+Service
+ ↓
+Interceptor (after)
+ ↓
+Response

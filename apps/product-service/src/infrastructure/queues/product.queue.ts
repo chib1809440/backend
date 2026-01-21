@@ -1,0 +1,9 @@
+export const PRODUCT_QUEUE = {
+  name: 'PRODUCT_QUEUE',
+  commands: {
+    CREATE_PRODUCT: 'PRODUCT_QUEUE.CREATE_PRODUCT',
+  },
+  topics: {
+    PRODUCT_CREATED: 'PRODUCT_QUEUE.PRODUCT_CREATED',
+  },
+};

@@ -1,0 +1,216 @@
+src/
+├── main.ts
+├── app.module.ts
+│
+├── config/
+│   ├── app.config.ts
+│   ├── database.config.ts
+│   └── env.validation.ts
+│
+├── shared/
+│   ├── middlewares/
+│   ├── guards/
+│   ├── interceptors/
+│   ├── filters/
+│   ├── pipes/
+│   └── decorators/
+│
+src/
+├── modules/
+│   └── order/
+│       ├── presentation/ (👉 Nhận HTTP, validate input, trả response 👉 KHÔNG business logic)
+│       │   └── order.controller.ts
+│       │
+│       ├── application/ (👉 Điều phối luồng nghiệp vụ 👉 Gọi domain, repo, emit event)
+│       │   ├── commands/
+│       │   │   └── create-order.command.ts
+│       │   ├── handlers/
+│       │   │   └── create-order.handler.ts
+│       │   └── dto/
+│       │       └── create-order.dto.ts
+│       │
+│       ├── domain/ (👉 Không biết NestJS 👉 Chỉ tạo events)
+│       │   ├── entities/
+│       │   │   └── order.entity.ts
+│       │   ├── value-objects/
+│       │   │   └── order-id.vo.ts
+│       │   ├── aggregates/
+│       │   │   └── order.aggregate.ts
+│       │   ├── events/
+│       │   │   └── order-created.event.ts
+│       │   ├── repositories/
+│       │   │   └── order.repository.ts
+│       │   └── services/
+│       │       └── order-domain.service.ts
+│       │
+│       ├── infrastructure/
+│       │   ├── persistence/
+│       │   │   └── prisma-order.repository.ts
+│       │   ├── mappers/
+│       │   │   └── order.mapper.ts
+│       │   └── messaging/
+│       │       └── order-event.publisher.ts
+│       │
+│       └── order.module.ts
+├── libs/
+│   ├── base/
+│   │   ├── application/
+│   │   │   └── base.usecase.ts
+│   │   ├── domain/
+│   │   │   ├── base.entity.ts
+│   │   │   └── aggregate-root.ts
+│   │   ├── http/
+│   │   │   └── base.controller.ts
+│   │   └── errors/
+│   │       └── base.error.ts
+│   │
+│   └── database/
+│       └── prisma/
+│           ├── prisma.service.ts
+│           └── prisma.module.ts
+│
+├── test/
+│   ├── unit/
+│   └── e2e/
+│
+└── README.md
+
+
+
+I. Presentation Layer (Interface / Delivery)
+🎯 Trách nhiệm DUY NHẤT
+Nhận input – trả output
+
+✅ Được phép làm
+Nhận HTTP / GraphQL / gRPC / Message
+Parse request
+Validate kỹ thuật (format, required field)
+Map request → command / query
+Map result → response
+AuthN / AuthZ (role, permission)
+
+❌ Không được làm
+Business rule
+Quyết định trạng thái
+Transaction
+Gọi DB trực tiếp
+
+=======================================================
+
+II. Application Layer (Use Case / Orchestration)
+🎯 Trách nhiệm CỐT LÕI
+
+Điều phối một use case từ đầu đến cuối
+
+Application chịu trách nhiệm:
+Nhóm	Chi tiết
+Use case	Thực thi 1 hành động nghiệp vụ
+Transaction	Bắt / commit / rollback
+Coordination	Gọi domain, repo, event
+Consistency	Đảm bảo atomicity
+Policy	Ai được làm gì (business-level)
+✅ Được phép làm
+
+Gọi domain entity
+
+Load & save aggregate
+
+Quản lý transaction
+
+Ghi outbox event
+
+Phát domain event (internal)
+
+Retry logic ở mức use case
+
+❌ Không được làm
+
+SQL chi tiết
+
+Business rule phức tạp
+
+Logic thay đổi state trực tiếp
+
+Biết RabbitMQ/Kafka API
+
+==================================================
+
+
+III. Domain Layer (Business Core)
+🎯 Trách nhiệm DUY NHẤT
+
+Định nghĩa và bảo vệ nghiệp vụ
+
+Domain chịu trách nhiệm:
+Thành phần	Vai trò
+Entity	Trạng thái + hành vi
+Value Object	Giá trị bất biến
+Aggregate	Consistency boundary
+Domain Event	Business fact
+Invariant	Luật không được phá
+✅ Được phép làm
+
+Validate nghiệp vụ
+
+Thay đổi trạng thái nội tại
+
+Phát sinh domain event
+
+Throw business error
+
+❌ Tuyệt đối cấm
+
+NestJS decorators
+
+Prisma / ORM
+
+HTTP / MQ
+
+Transaction
+
+
+====================================================
+
+IV. . Infrastructure Layer (Technical Details)
+🎯 Trách nhiệm DUY NHẤT
+
+Triển khai chi tiết kỹ thuật
+
+Infrastructure chịu trách nhiệm:
+Nhóm	Ví dụ
+Persistence	Prisma / TypeORM
+Messaging	RabbitMQ / Kafka
+External	Payment Gateway
+Scheduler	Cron / Worker
+Mapping	Domain ↔ DB ↔ Event
+✅ Được phép làm
+
+SQL / Prisma
+
+Serialize message
+
+Retry network
+
+Polling / CDC
+
+Cache
+
+❌ Không được làm
+
+Quyết định nghiệp vụ
+
+Thay đổi domain rule
+
+Gọi trực tiếp domain logic phức tạp
+
+
+=============================================
+V.Cross-cutting concerns (ở đâu?)
+Concern	Tầng
+Logging	Infra
+Metrics	Infra
+Caching	Infra
+Auth (technical)	Presentation
+Authorization (business)	Application
+Validation (business)	Domain
+Validation (format)	Presentation

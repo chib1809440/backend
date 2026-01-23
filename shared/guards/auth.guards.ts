@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
@@ -11,17 +12,13 @@ export class AuthenticationGuard implements CanActivate {
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
-    const roles = this.reflector.getAllAndMerge<string[]>('roles', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
-    console.log('🚀 ~ AuthenticationGuard ~ canActivate ~ roles:', roles);
-
     const request = context.switchToHttp().getRequest();
     console.log('🚀 ~ AuthenticationGuard ~ canActivate ~ request:');
-    const token = request?.headers?.authorization;
+    const authentication = request?.headers?.authorization;
 
-    console.log('🚀 ~ AuthGuard ~ canActivate ~ request:', token);
+    const token = authentication?.split(' ')[1];
+    console.log('🚀 ~ AuthenticationGuard ~ canActivate ~ token:', token);
+
     // if (token !== '123') return false;
     return true;
   }

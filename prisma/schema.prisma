@@ -7,28 +7,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// =======================
-// ENUMS
-// =======================
-
-model Order {
-  id        String   @id
-  status    String
-  createdAt DateTime @default(now())
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  BANNED
 }
 
-model OutboxEvent {
-  id          String    @id
-  eventType   String
-  payload     Json
-  status      String
-  createdAt   DateTime  @default(now())
-  processedAt DateTime?
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  status       UserStatus @default(ACTIVE)
+  createdAt    DateTime   @default(now())
+  updateAt     DateTime   @updatedAt
+
+  sessions    UserSession[]
+  lastLoginAt DateTime?
+
+  @@map("users")
 }
 
-model Product {
-  id        String   @id
-  name      String
-  price     Float
-  createdAt DateTime @default(now())
+model UserSession {
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  id               String    @id @default(uuid())
+  refreshTokenHash String
+  userAgent        String?
+  ipAddress        String?
+  expiresAt        DateTime
+  revokedAt        DateTime?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  @@index([userId])
+  @@index([refreshTokenHash])
 }

@@ -10,7 +10,7 @@ import { TrimPipe } from 'shared/pipes/trim.pipe';
 export class GatewayServiceController {
   @Get()
   // @UseGuards(AuthenticationGuard)
-  @Roles('admin', 'user')
+  // @Roles('admin', 'user')
   async log(@Query('name', new TrimPipe()) name: string) {
     return await new Promise((resolve) =>
       setTimeout(() => {

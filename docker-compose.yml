@@ -87,5 +87,6 @@ services:
       postgres:
         condition: service_started
 
+
 volumes:
   pg_data:

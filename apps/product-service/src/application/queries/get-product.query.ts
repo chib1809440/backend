@@ -6,7 +6,7 @@ import { PrismaService } from '@app/infrastructure/prisma/prisma.service';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class getProductQuery {
+export class GetProductQuery {
   constructor(private readonly prisma: PrismaService) {}
 
   async execute() {

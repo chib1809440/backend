@@ -1,13 +1,20 @@
-FROM node:20-alpine AS builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci
-COPY . .
-RUN npm run build
-
 FROM node:20-alpine
+
 WORKDIR /app
-COPY --from=builder /app/dist ./dist
-COPY package*.json ./
-RUN npm ci --omit=dev
-CMD ["node", "dist/main.js"]
+
+RUN npm install -g pnpm
+
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+
+COPY prisma ./prisma
+RUN pnpm prisma generate
+
+COPY . .
+
+ARG SERVICE
+RUN pnpm nest build ${SERVICE}
+
+ENV SERVICE=${SERVICE}
+
+CMD ["sh", "-c", "node dist/apps/$SERVICE/main.js"]

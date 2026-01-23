@@ -4,7 +4,7 @@ import { RabbitMQV2Module } from '@app/infrastructure/rabbitmq-v2/rabbitmq.modul
 import { Module } from '@nestjs/common';
 import { CreateProductCommand } from './application/commands/create-product.command';
 import { ProductHandle } from './application/handlers/product-created.handle';
-import { getProductQuery } from './application/queries/get-product.query';
+import { GetProductQuery } from './application/queries/get-product.query';
 import { PRODUCT_REPOSITORY_TOKEN } from './domain/repository/product.repository';
 import { PrismaProductRepository } from './infrastructure/product.prisma.repository';
 import { ProductController } from './presentation/product.controller';
@@ -14,7 +14,7 @@ import { ProductController } from './presentation/product.controller';
   controllers: [ProductController],
   providers: [
     CreateProductCommand,
-    getProductQuery,
+    GetProductQuery,
     ProductHandle,
     {
       provide: PRODUCT_REPOSITORY_TOKEN,

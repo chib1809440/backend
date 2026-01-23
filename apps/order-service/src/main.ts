@@ -16,6 +16,6 @@ async function bootstrap() {
   });
 
   app.startAllMicroservices();
-  await app.listen(8001);
+  await app.listen(process.env.ORDER_SERVICE || 8002);
 }
 bootstrap();

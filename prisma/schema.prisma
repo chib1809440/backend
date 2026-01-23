@@ -43,3 +43,25 @@ model UserSession {
   @@index([userId])
   @@index([refreshTokenHash])
 }
+
+model Order {
+  id        String   @id
+  status    String
+  createdAt DateTime @default(now())
+}
+
+model OutboxEvent {
+  id          String    @id
+  eventType   String
+  payload     Json
+  status      String
+  createdAt   DateTime  @default(now())
+  processedAt DateTime?
+}
+
+model Product {
+  id        String   @id
+  name      String
+  price     Float
+  createdAt DateTime @default(now())
+}

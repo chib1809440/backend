@@ -76,6 +76,8 @@ export class RefreshTokenUseCase {
     return {
       accessToken: this.tokens.generateAccessToken({
         id: session.userId,
+        email: '',
+        status: 'ACTIVE',
       }),
       refreshToken: newRefreshToken,
     };

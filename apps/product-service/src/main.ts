@@ -6,6 +6,6 @@ async function bootstrap() {
 
   await app.startAllMicroservices();
 
-  await app.listen(process.env.PRODUCT_SERVICE_PORT ?? 8002);
+  await app.listen(process.env.PRODUCT_SERVICE ?? 8003);
 }
 bootstrap();

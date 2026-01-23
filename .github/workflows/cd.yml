@@ -5,6 +5,10 @@ on:
     workflows: ['CI']
     types: [completed]
 
+permissions:
+  contents: read
+  packages: write
+
 jobs:
   deploy:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
@@ -18,12 +22,13 @@ jobs:
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
-          password: ${{ secrets.GHCR_TOKEN }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build & Push Docker
         run: |
-          docker build -t ghcr.io/ORG/REPO/backend:latest .
-          docker push ghcr.io/ORG/REPO/backend:latest
+          IMAGE=ghcr.io/${{ github.repository }}/backend:latest
+          docker build -t $IMAGE .
+          docker push $IMAGE
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1

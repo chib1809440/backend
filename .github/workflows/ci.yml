@@ -51,9 +51,6 @@ jobs:
       - name: Build
         run: pnpm run build
 
-      - name: Build
-        run: pnpm run build
-
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v2
         env:

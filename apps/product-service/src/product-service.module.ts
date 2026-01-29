@@ -1,6 +1,6 @@
 import { EventBusModule } from '@app/infrastructure/event-bus/event-bus.module';
 import { InfrastructureModule } from '@app/infrastructure/infrastructure.module';
-import { RabbitMQV2Module } from '@app/infrastructure/rabbitmq-v2/rabbitmq.module';
+import { RabbitMQModule } from '@app/infrastructure/rabbitmq/rabbitmq.module';
 import { Module } from '@nestjs/common';
 import { CreateProductCommand } from './application/commands/create-product.command';
 import { ProductHandle } from './application/handlers/product-created.handle';
@@ -10,7 +10,7 @@ import { PrismaProductRepository } from './infrastructure/product.prisma.reposit
 import { ProductController } from './presentation/product.controller';
 
 @Module({
-  imports: [InfrastructureModule, EventBusModule, RabbitMQV2Module],
+  imports: [InfrastructureModule, EventBusModule, RabbitMQModule],
   controllers: [ProductController],
   providers: [
     CreateProductCommand,

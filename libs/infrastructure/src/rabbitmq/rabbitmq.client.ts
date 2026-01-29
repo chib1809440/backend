@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
 import {
   ClientProxy,
   ClientProxyFactory,
@@ -16,13 +16,20 @@ import {
   TimeoutError,
   timer,
 } from 'rxjs';
-import { RabbitMQClient } from '../rabbitmq/client/rabbitmq.client';
 import { RABBITMQ_URL } from './rabbitmq.constants';
 
 @Injectable()
-export class RabbitMQClientV2 {
+export class RabbitMQClient implements OnModuleDestroy {
   private readonly logger = new Logger(RabbitMQClient.name);
   private readonly clients = new Map<string, ClientProxy>();
+
+  async onModuleDestroy() {
+    for (const [queue, client] of this.clients) {
+      await client.close();
+      this.logger.log(`Closed client for queue: ${queue}`);
+    }
+    this.clients.clear();
+  }
 
   /**
    * Lazy create client per queue
@@ -39,6 +46,7 @@ export class RabbitMQClientV2 {
           queueOptions: {
             durable: true,
           },
+          persistent: true,
         },
       });
 
@@ -91,7 +99,7 @@ export class RabbitMQClientV2 {
                   retryIndex + 1
                 }/${retryCount} | queue=${queue} | pattern=${pattern}`,
               );
-              return timer(retryDelayMs);
+              return timer(retryDelayMs * Math.pow(2, retryIndex));
             }
 
             throw error;

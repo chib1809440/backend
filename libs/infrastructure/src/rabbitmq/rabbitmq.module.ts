@@ -1,14 +1,9 @@
-import { DynamicModule, Global, Module } from '@nestjs/common';
-import { RabbitMQClient } from './client/rabbitmq.client';
+import { Global, Module } from '@nestjs/common';
+import { RabbitMQClient } from './rabbitmq.client';
 
 @Global()
-@Module({})
-export class RabbitMQModule {
-  static register(): DynamicModule {
-    return {
-      module: RabbitMQModule,
-      providers: [RabbitMQClient],
-      exports: [RabbitMQClient],
-    };
-  }
-}
+@Module({
+  providers: [RabbitMQClient],
+  exports: [RabbitMQClient],
+})
+export class RabbitMQModule {}

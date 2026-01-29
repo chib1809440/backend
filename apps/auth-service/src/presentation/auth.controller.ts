@@ -12,12 +12,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { JwtAuthGuard } from '../../../../shared/guards/jwt.guard';
 import { LoginDto } from '../application/dto/login.dto';
 import { LoginUseCase } from '../application/user-cases/login.usecase';
 import { LogoutUseCase } from '../application/user-cases/logout.usecase';
 import { RefreshTokenUseCase } from '../application/user-cases/refresh-token.usecase';
 import { RegisterUseCase } from '../application/user-cases/register.usecase';
-import { JwtAuthGuard } from './guards/jwt.guard';
 
 @Controller('auth')
 export class AuthController {

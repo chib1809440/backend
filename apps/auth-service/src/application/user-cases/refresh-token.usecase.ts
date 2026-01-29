@@ -10,10 +10,6 @@ import {
   TOKEN_SESSION_REPOSITORY,
 } from '../../domain/repositorires/session.repository';
 import {
-  TOKEN_USER_REPOSITORY,
-  UserRepository,
-} from '../../domain/repositorires/user.repository';
-import {
   PasswordHasher,
   TOKEN_PASSWORD_HASHER,
 } from '../../domain/services/password-hasher';
@@ -26,8 +22,7 @@ export class RefreshTokenUseCase {
   constructor(
     @Inject(TOKEN_SESSION_REPOSITORY)
     private readonly sessions: SessionRepository,
-    @Inject(TOKEN_USER_REPOSITORY)
-    private readonly users: UserRepository,
+
     @Inject(TOKEN_SERVICE)
     private readonly tokens: TokenService,
     @Inject(TOKEN_PASSWORD_HASHER)

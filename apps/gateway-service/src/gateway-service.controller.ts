@@ -1,21 +1,13 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { Controller, Get, Query } from '@nestjs/common';
-import { Roles } from 'shared/decorators/auth.decorator';
-import { TrimPipe } from 'shared/pipes/trim.pipe';
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('')
-// @UseGuards(AuthenticationGuard)
-// @UseInterceptors(new TransformInterceptor())
-@Roles('super-admin')
 export class GatewayServiceController {
+  private count = 0;
   @Get()
-  // @UseGuards(AuthenticationGuard)
-  // @Roles('admin', 'user')
-  async log(@Query('name', new TrimPipe()) name: string) {
-    return await new Promise((resolve) =>
-      setTimeout(() => {
-        resolve(`Hello ${name}!`);
-      }, 1000),
-    );
+  // @UseGuards(JwtAuthGuard)
+  get() {
+    this.count++;
+    return `Hello World! ${this.count}`;
   }
 }

@@ -2,21 +2,21 @@
 /* eslint-disable @typescript-eslint/await-thenable */
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
 import { EventBus } from '@app/infrastructure/event-bus/event-bus.service';
-import { RabbitMQClientV2 } from '@app/infrastructure/rabbitmq-v2/rabbitmq.client';
+import { RabbitMQClient } from '@app/infrastructure/rabbitmq/rabbitmq.client';
 import { Inject } from '@nestjs/common';
+import { PRODUCT_QUEUE } from 'shared/queues/product.queue';
 import { Product } from '../../domain/aggregate/product.aggregate';
 import {
   IProductRepository,
   PRODUCT_REPOSITORY_TOKEN,
 } from '../../domain/repository/product.repository';
-import { ORDER_QUEUE } from '../../infrastructure/queues/order.queue';
 
 export class CreateProductCommand {
   constructor(
     @Inject(PRODUCT_REPOSITORY_TOKEN)
     private readonly productRepo: IProductRepository,
     private readonly eventBus: EventBus,
-    private readonly mq: RabbitMQClientV2,
+    private readonly mq: RabbitMQClient,
   ) {}
 
   async execute(data: any) {
@@ -28,9 +28,13 @@ export class CreateProductCommand {
       this.eventBus.publishAll(product.pullEvents());
 
       const rpc = await this.mq.send(
-        ORDER_QUEUE.name,
-        ORDER_QUEUE.commands.CREATE_ORDER,
-        product,
+        PRODUCT_QUEUE.name,
+        'PRODUCT_QUEUE.PRODUCT_CREATED',
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+        },
       );
       console.log('🚀 ~ CreateProductCommand ~ execute ~ rpc:', rpc);
 

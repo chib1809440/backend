@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 
-const keysDir = path.join(process.cwd(), 'apps/auth-service/keys');
+const keysDir = path.join(process.cwd(), '/keys');
 
 export const JWT_PRIVATE_KEY = fs.readFileSync(
   path.join(keysDir, 'jwt-private.pem'),

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { Controller, Get, Query } from '@nestjs/common';
@@ -15,13 +16,8 @@ export class SearchServiceController {
 
   @MessagePattern('PRODUCT_QUEUE.PRODUCT_CREATED')
   handle(@Payload() data: any, @Ctx() ctx: RmqContext) {
-    const msg = ctx.getMessage();
-    console.log('🚀 ~ SearchServiceController ~ handle ~ msg:', msg);
-    console.log('🚀 ~ SearchServiceController ~ handle ~ payload:', data);
     console.log('🚀 ~ SearchServiceController ~ handle ~ ctx:', ctx);
-
     this.searchService.createProduct(data);
-
     return true;
   }
 

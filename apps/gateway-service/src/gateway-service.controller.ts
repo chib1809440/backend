@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/require-await */
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, UseInterceptors } from '@nestjs/common';
+import { GatewayServiceService } from './gateway-service.service';
+import { LoggingInterceptor } from 'shared/interceptors/logging.interceptor';
+import { AppLogger } from 'shared/logger/app-logger.service';
 
 @Controller('')
+@UseInterceptors(LoggingInterceptor)
 export class GatewayServiceController {
-  private count = 0;
+  constructor(private readonly service: GatewayServiceService,
+    private readonly logger: AppLogger
+  ) {
+     this.logger.setContext('TestController');
+  }
+
   @Get()
-  // @UseGuards(JwtAuthGuard)
   get() {
-    this.count++;
-    return `Hello World! ${this.count}`;
+    this.logger.log('Hello endpoint called');
+    return this.service.hello();
   }
 }

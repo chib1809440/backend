@@ -78,9 +78,9 @@ export class RabbitMQClient implements OnModuleDestroy {
     },
   ): Promise<T> {
     const {
-      timeoutMs = 3000,
+      timeoutMs = 60000,
       retryCount = 2,
-      retryDelayMs = 300,
+      retryDelayMs = 3000,
       defaultValue,
     } = options ?? {};
 

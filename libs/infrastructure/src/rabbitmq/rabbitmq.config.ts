@@ -8,5 +8,12 @@ export const rabbitmqConfigConsumer = (queue: string) => ({
     urls: [rabbitmqUrl],
     queue: queue,
     queueOptions: { durable: true },
+    prefetchCount: 10,
+    persistent: true,
+    noAck: true,
+    socketOptions: {
+      heartbeatIntervalInSeconds: 60,
+      reconnectTimeInSeconds: 5,
+    },
   },
 });
